@@ -7,29 +7,30 @@ Event Details
 {% block content %}
     <div class="container">
         <div class="clearfix">
-            <a class="btn btn-primary left" href="{% url 'calendarapp:calendar' %}"> Calendar </a>
-            <a class="btn btn-info right mr-2" href="{% url 'calendarapp:event_edit' event.pk %}"> Edit Event </a>
+            <a class="btn btn-primary left" href="{% url 'calendarapp:calendar' %}"> Calendario </a>
+            <a class="btn btn-info right mr-2" href="{% url 'calendarapp:event_edit' event.pk %}"> Editar Impresion </a>
         </div>
         
         <div class="clearfix">
-            <h3>Event Name: {{ event.title }}</h3>
-            <p>From <span style="color: gray;">{{ event.start_time }}</span> To <span style="color: gray;">{{ event.end_time }}</span></p>
+            <h3>Nombre de Evento: {{ event.title }}</h3>
+            <p>Inicio de Impresion <span style="color: gray;">{{ event.start_time }}</span><br> Impresion Finalizada <span style="color: steelblue;">{{ event.end_time }}</span></p>
             <hr>
             <p>{{ event.description }}</p>
         </div>
         <hr>
         <div class="clearfix">
-            <h4 class="left" > Members of this Event</h4>
-            <a class="btn btn-success right" href="{% url 'calendarapp:add_eventmember' event.id %}"> Add Member </a>
+            <h4 class="left" > Clientes para impresion</h4>
+            <a class="btn btn-success right" href="{% url 'calendarapp:add_eventmember' event.id %}"> Agregar Cliente </a>
         </div>
         <table class="table table-bordered">
             <thead>                  
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Name</th>
-                  <th>Username</th>
+                  <th>Cliente</th>
                   <th>Email</th>
-                  <th>Action</th>
+                  <th>Empresa</th>
+                  <th>Cantidad</th>
+                  <th>Acción</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,12 +38,32 @@ Event Details
                 <tr role="row">
                     <td>{{ forloop.counter }}</td>
                     <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
-                    <td>{{ member.user.username }}</td>
                     <td>{{ member.user.email }}</td>
+                    <td><select id="select">
+                        <option value="default"></option>
+                    </select></td>
+                    <td><div class="quantity">
+                        <input type="number" min="1" max="9" step="1" value="1">
+                      </div></td>
                     <td>
                         <a class="btn btn-danger" href="{% url 'calendarapp:remove_event' member.id %}">Remove</a>
                     </td>
                 </tr>
+                <script>
+            
+                    var select = document.getElementById("select"),
+                             arr = ["Tulix","Lmxeventos","Klubien","JOB"];
+                     
+                     for(var i = 0; i < arr.length; i++)
+                     {
+                         var option = document.createElement("OPTION"),
+                             txt = document.createTextNode(arr[i]);
+                         option.appendChild(txt);
+                         option.setAttribute("value",arr[i]);
+                         select.insertBefore(option,select.lastChild);
+                     }
+                     
+                </script>
                 {% endfor %}
               </tbody>
         </table>
